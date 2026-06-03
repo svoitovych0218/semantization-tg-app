@@ -15,6 +15,19 @@
   color: var(--color-hint);
 }
 
+.leaderboard-view__loading {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.leaderboard-view__error {
+  font-size: 0.85rem;
+  color: var(--score-red);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--score-red) 12%, transparent);
+}
+
 .leaderboard-view__empty {
   display: flex;
   flex-direction: column;
@@ -34,9 +47,80 @@
   font-weight: 600;
 }
 
-.leaderboard-view__placeholder {
-  text-align: center;
+/* Leaderboard list */
+
+.lb-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  max-height: 60dvh;
+  padding-right: 2px;
+}
+
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-bg);
+}
+
+.lb-row--me {
+  outline: 2px solid var(--color-button);
+}
+
+.lb-row__rank {
+  font-size: 0.8rem;
+  font-weight: 700;
   color: var(--color-hint);
-  font-size: 0.85rem;
-  padding-bottom: 16px;
+  min-width: 28px;
+  flex-shrink: 0;
+}
+
+.lb-row__dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.lb-row__dot--red    { background-color: var(--score-red); }
+.lb-row__dot--orange { background-color: var(--score-orange); }
+.lb-row__dot--yellow { background-color: var(--score-yellow); }
+.lb-row__dot--green  { background-color: var(--score-green); }
+.lb-row__dot--gold   { background-color: var(--score-gold); }
+
+.lb-row__name {
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lb-row__you {
+  font-size: 0.8rem;
+  color: var(--color-button);
+}
+
+.lb-row__score {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.lb-row__score--red    { color: var(--score-red); }
+.lb-row__score--orange { color: var(--score-orange); }
+.lb-row__score--yellow { color: var(--score-yellow); }
+.lb-row__score--green  { color: var(--score-green); }
+.lb-row__score--gold   { color: var(--score-gold); }
+
+.lb-row__trophy {
+  font-size: 1rem;
+  flex-shrink: 0;
 }
