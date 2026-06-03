@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 
 from aiogram.types import Update
@@ -5,18 +6,26 @@ from fastapi import FastAPI, HTTPException, Request
 
 from .bot import bot, dp
 from .config import settings
+from .embedding import warm_up
+from .routers.admin import router as admin_router
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Pre-load the embedding model before accepting traffic
+    await asyncio.to_thread(warm_up)
+
     webhook_url = f"{settings.WEBHOOK_URL}/webhook/{settings.BOT_TOKEN}"
     await bot.set_webhook(webhook_url, drop_pending_updates=True)
+
     yield
+
     await bot.delete_webhook()
     await bot.session.close()
 
 
 app = FastAPI(title="Semantle UA", lifespan=lifespan)
+app.include_router(admin_router)
 
 
 @app.get("/health")
