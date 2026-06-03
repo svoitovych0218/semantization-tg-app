@@ -11,6 +11,7 @@ from .routers.admin import router as admin_router
 from .routers.guess import router as guess_router
 from .routers.leaderboard import router as leaderboard_router
 from .routers.register import router as register_router
+from .scheduler import create_scheduler
 
 
 @asynccontextmanager
@@ -21,8 +22,12 @@ async def lifespan(app: FastAPI):
     webhook_url = f"{settings.WEBHOOK_URL}/webhook/{settings.BOT_TOKEN}"
     await bot.set_webhook(webhook_url, drop_pending_updates=True)
 
+    scheduler = create_scheduler()
+    scheduler.start()
+
     yield
 
+    scheduler.shutdown(wait=False)
     await bot.delete_webhook()
     await bot.session.close()
 
