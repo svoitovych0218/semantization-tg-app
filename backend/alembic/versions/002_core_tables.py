@@ -1,7 +1,7 @@
-"""core tables: user, chat, daily_word, user_chat, guess
+"""core tables: user, chat, user_chat, guess
 
-Revision ID: 002
-Revises: 001
+Revision ID: 003
+Revises: 002
 Create Date: 2026-06-03 00:00:00.000000
 
 """
@@ -9,10 +9,9 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
-from sqlalchemy.dialects.postgresql import ARRAY
 
-revision: str = "002"
-down_revision: Union[str, None] = "001"
+revision: str = "003"
+down_revision: Union[str, None] = "002"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -31,14 +30,6 @@ def upgrade() -> None:
         sa.Column("title", sa.String(255), nullable=False),
         sa.Column("registered_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.func.now()),
         sa.Column("is_active", sa.Boolean, nullable=False, server_default=sa.true()),
-    )
-
-    op.create_table(
-        "daily_word",
-        sa.Column("id", sa.Integer, primary_key=True, autoincrement=True),
-        sa.Column("word", sa.String(100), nullable=False),
-        sa.Column("date", sa.Date, nullable=False, unique=True),
-        sa.Column("embedding", ARRAY(sa.Float(precision=24)), nullable=False),
     )
 
     op.create_table(
@@ -63,6 +54,5 @@ def upgrade() -> None:
 def downgrade() -> None:
     op.drop_table("guess")
     op.drop_table("user_chat")
-    op.drop_table("daily_word")
     op.drop_table("chat")
     op.drop_table("user")

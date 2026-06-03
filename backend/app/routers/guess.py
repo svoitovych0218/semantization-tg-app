@@ -2,6 +2,7 @@ import asyncio
 import hashlib
 import hmac
 import json
+import math
 import time
 from datetime import UTC, date, datetime
 from typing import Literal
@@ -60,8 +61,8 @@ def _score_to_color(score: int) -> Literal["red", "orange", "yellow", "green", "
 
 
 def _compute_score(cosine_similarity: float) -> int:
-    raw = ((cosine_similarity - 0.7) / 0.3) * 10000
-    return max(0, min(10000, round(raw)))
+    normalized = 1 / (1 + math.exp(-(cosine_similarity - 0.245) / 0.015))
+    return round(normalized * 9999)
 
 
 class GuessRequest(BaseModel):
@@ -117,6 +118,20 @@ async def make_guess(body: GuessRequest) -> GuessResponse:
                 )
             )
 
+            # Block further guesses if user already found the word today
+            won = (
+                await session.execute(
+                    select(Guess).where(
+                        Guess.user_id == user_id,
+                        Guess.word_date == today,
+                        Guess.score == 10000,
+                    )
+                )
+            ).scalar_one_or_none()
+
+            if won is not None:
+                raise HTTPException(status_code=403, detail="Ти вже знайшов слово сьогодні!")
+
             # Deduplication: return cached score if word already guessed today
             existing = (
                 await session.execute(
@@ -142,12 +157,12 @@ async def make_guess(body: GuessRequest) -> GuessResponse:
     if daily_word is None:
         raise HTTPException(status_code=404, detail="No word scheduled for today")
 
-    # Embed the guess (CPU-bound; run off the event loop)
-    guess_vec = await asyncio.to_thread(encode_query, body.word)
-
-    # Both vectors are L2-normalised, so dot product equals cosine similarity
-    cosine_sim = sum(a * b for a, b in zip(guess_vec, daily_word.embedding))
-    score = _compute_score(cosine_sim)
+    if body.word.strip().lower() == daily_word.word.strip().lower():
+        score = 10000
+    else:
+        guess_vec = await asyncio.to_thread(encode_query, body.word)
+        cosine_sim = sum(a * b for a, b in zip(guess_vec, daily_word.embedding))
+        score = min(9999, _compute_score(cosine_sim))
 
     try:
         async with async_session_maker() as session:

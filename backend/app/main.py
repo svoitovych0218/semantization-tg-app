@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 from aiogram.types import Update
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 
 from .bot import bot, dp
 from .config import settings
@@ -33,6 +34,12 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Semantle UA", lifespan=lifespan)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 app.include_router(admin_router)
 app.include_router(guess_router)
 app.include_router(leaderboard_router)

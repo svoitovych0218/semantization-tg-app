@@ -1,28 +1,22 @@
-from sentence_transformers import SentenceTransformer
+from openai import OpenAI
 
-_model: SentenceTransformer | None = None
-MODEL_NAME = "intfloat/multilingual-e5-small"
+from .config import settings
 
-
-def get_model() -> SentenceTransformer:
-    global _model
-    if _model is None:
-        _model = SentenceTransformer(MODEL_NAME)
-    return _model
+_client: OpenAI | None = None
+MODEL = "text-embedding-3-small"
 
 
-def encode_passage(word: str) -> list[float]:
-    """Embed a secret word using the passage: prefix required by e5 models."""
-    vec = get_model().encode(f"passage: {word}", normalize_embeddings=True)
-    return vec.tolist()
+def get_client() -> OpenAI:
+    global _client
+    if _client is None:
+        _client = OpenAI(api_key=settings.OPENAI_API_KEY)
+    return _client
 
 
 def encode_query(word: str) -> list[float]:
-    """Embed a player's guess using the query: prefix required by e5 models."""
-    vec = get_model().encode(f"query: {word}", normalize_embeddings=True)
-    return vec.tolist()
+    response = get_client().embeddings.create(input=word, model=MODEL)
+    return response.data[0].embedding
 
 
 def warm_up() -> None:
-    """Pre-load the model at startup so the first request is not slow."""
-    get_model()
+    get_client()

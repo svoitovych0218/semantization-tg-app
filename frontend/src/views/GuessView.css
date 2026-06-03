@@ -42,6 +42,16 @@
   cursor: not-allowed;
 }
 
+.guess-view__won {
+  font-size: 0.95rem;
+  color: var(--score-gold);
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--score-gold) 12%, transparent);
+  text-align: center;
+  font-weight: 600;
+}
+
 .guess-view__error {
   font-size: 0.85rem;
   color: var(--score-red);

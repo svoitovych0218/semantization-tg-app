@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     WEBHOOK_URL: str
     ADMIN_KEY: str
     MINI_APP_URL: str
+    OPENAI_API_KEY: str
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 

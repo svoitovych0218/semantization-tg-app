@@ -28,6 +28,7 @@ export default function GuessView() {
   const [guesses, setGuesses] = useState<GuessEntry[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const won = guesses.some(g => g.color === 'gold')
   const [highlightWord, setHighlightWord] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const highlightTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -119,28 +120,34 @@ export default function GuessView() {
         Кожна спроба дає оцінку від 0 до 10 000.
       </p>
 
-      <form className="guess-view__input-row" onSubmit={handleSubmit}>
-        <input
-          ref={inputRef}
-          className="guess-view__input"
-          type="text"
-          placeholder="Введи слово..."
-          value={word}
-          onChange={e => setWord(e.target.value)}
-          disabled={loading}
-          autoComplete="off"
-          autoCapitalize="none"
-          spellCheck={false}
-        />
-        <button
-          type="submit"
-          className="btn"
-          style={{ width: 'auto', padding: '12px 20px' }}
-          disabled={loading || !word.trim()}
-        >
-          →
-        </button>
-      </form>
+      {won && (
+        <p className="guess-view__won">🎉 Ти знайшов слово! Повертайся завтра за новим.</p>
+      )}
+
+      {!won && (
+        <form className="guess-view__input-row" onSubmit={handleSubmit}>
+          <input
+            ref={inputRef}
+            className="guess-view__input"
+            type="text"
+            placeholder="Введи слово..."
+            value={word}
+            onChange={e => setWord(e.target.value)}
+            disabled={loading}
+            autoComplete="off"
+            autoCapitalize="none"
+            spellCheck={false}
+          />
+          <button
+            type="submit"
+            className="btn"
+            style={{ width: 'auto', padding: '12px 20px' }}
+            disabled={loading || !word.trim()}
+          >
+            →
+          </button>
+        </form>
+      )}
 
       {error && <p className="guess-view__error">{error}</p>}
 

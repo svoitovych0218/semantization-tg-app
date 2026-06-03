@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 
 from ..config import settings
 from ..database import async_session_maker
-from ..embedding import encode_passage
+from ..embedding import encode_query
 from ..models import DailyWord
 
 router = APIRouter(prefix="/admin", tags=["admin"])
@@ -39,7 +39,7 @@ async def bulk_insert_words(
     for item in body:
         try:
             # encode_passage is CPU-bound; run in thread pool to avoid blocking the event loop
-            embedding = await asyncio.to_thread(encode_passage, item.word)
+            embedding = await asyncio.to_thread(encode_query, item.word)  # run sync OpenAI client off event loop
 
             async with async_session_maker() as session:
                 async with session.begin():
