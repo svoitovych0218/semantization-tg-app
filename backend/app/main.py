@@ -8,6 +8,7 @@ from .bot import bot, dp
 from .config import settings
 from .embedding import warm_up
 from .routers.admin import router as admin_router
+from .routers.guess import router as guess_router
 
 
 @asynccontextmanager
@@ -26,6 +27,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Semantle UA", lifespan=lifespan)
 app.include_router(admin_router)
+app.include_router(guess_router)
 
 
 @app.get("/health")

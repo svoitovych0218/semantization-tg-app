@@ -17,6 +17,12 @@ def encode_passage(word: str) -> list[float]:
     return vec.tolist()
 
 
+def encode_query(word: str) -> list[float]:
+    """Embed a player's guess using the query: prefix required by e5 models."""
+    vec = get_model().encode(f"query: {word}", normalize_embeddings=True)
+    return vec.tolist()
+
+
 def warm_up() -> None:
     """Pre-load the model at startup so the first request is not slow."""
     get_model()

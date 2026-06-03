@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import BigInteger, Date, DateTime, Float, ForeignKey, Integer, String, UniqueConstraint
+from sqlalchemy import BigInteger, Boolean, Date, DateTime, Float, ForeignKey, Integer, String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -13,6 +13,17 @@ class User(Base):
     telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     first_name: Mapped[str] = mapped_column(String(64), nullable=False)
     username: Mapped[str | None] = mapped_column(String(64))
+
+
+class Chat(Base):
+    __tablename__ = "chat"
+
+    telegram_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    registered_at: Mapped[datetime.datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+    is_active: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
 
 
 class DailyWord(Base):
@@ -28,7 +39,7 @@ class UserChat(Base):
     __tablename__ = "user_chat"
 
     user_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("user.telegram_id"), primary_key=True)
-    chat_id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    chat_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("chat.telegram_id"), primary_key=True)
     joined_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), default=datetime.datetime.now(datetime.UTC)
     )
