@@ -23,8 +23,14 @@ function useTelegramInit() {
   }, [])
 }
 
+function hasChatContext(): boolean {
+  const initData = window.Telegram?.WebApp?.initData ?? ''
+  return !!initData && new URLSearchParams(initData).has('chat')
+}
+
 export default function App() {
   useTelegramInit()
+  const groupMode = hasChatContext()
 
   return (
     <div className="app">
@@ -33,7 +39,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/guess" replace />} />
           <Route path="/guess" element={<GuessView />} />
-          <Route path="/leaderboard" element={<LeaderboardView />} />
+          <Route
+            path="/leaderboard"
+            element={groupMode ? <LeaderboardView /> : <Navigate to="/guess" replace />}
+          />
         </Routes>
       </main>
     </div>
