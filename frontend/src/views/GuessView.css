@@ -1,7 +1,7 @@
 .guess-view {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .guess-view__title {
@@ -42,9 +42,93 @@
   cursor: not-allowed;
 }
 
-.guess-view__placeholder {
-  text-align: center;
-  color: var(--color-hint);
+.guess-view__error {
   font-size: 0.85rem;
-  padding: 24px 0;
+  color: var(--score-red);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: color-mix(in srgb, var(--score-red) 12%, transparent);
+}
+
+.guess-view__duplicate {
+  font-size: 0.85rem;
+  color: var(--color-hint);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: var(--color-secondary-bg);
+  animation: fade-in 0.2s ease;
+}
+
+/* Guess history list */
+
+.guess-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+  max-height: 60dvh;
+  padding-right: 2px;
+}
+
+.guess-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-bg);
+  transition: outline 0.15s;
+}
+
+.guess-row--highlight {
+  outline: 2px solid var(--color-button);
+  animation: flash 0.4s ease;
+}
+
+.guess-row__dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.guess-row__dot--red    { background-color: var(--score-red); }
+.guess-row__dot--orange { background-color: var(--score-orange); }
+.guess-row__dot--yellow { background-color: var(--score-yellow); }
+.guess-row__dot--green  { background-color: var(--score-green); }
+.guess-row__dot--gold   { background-color: var(--score-gold); }
+
+.guess-row__word {
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.guess-row__score {
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-hint);
+}
+
+.guess-row--red    .guess-row__score { color: var(--score-red); }
+.guess-row--orange .guess-row__score { color: var(--score-orange); }
+.guess-row--yellow .guess-row__score { color: var(--score-yellow); }
+.guess-row--green  .guess-row__score { color: var(--score-green); }
+.guess-row--gold   .guess-row__score { color: var(--score-gold); }
+
+.guess-row__trophy {
+  font-size: 1rem;
+}
+
+@keyframes flash {
+  0%   { outline-color: transparent; }
+  30%  { outline-color: var(--color-button); }
+  100% { outline-color: var(--color-button); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

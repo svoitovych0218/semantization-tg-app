@@ -15,14 +15,22 @@ interface TelegramThemeParams {
   destructive_text_color?: string;
 }
 
+interface TelegramHapticFeedback {
+  impactOccurred(style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft'): void;
+  notificationOccurred(type: 'error' | 'success' | 'warning'): void;
+  selectionChanged(): void;
+}
+
 interface TelegramWebApp {
   ready(): void;
+  initData: string;
   colorScheme: 'light' | 'dark';
   themeParams: TelegramThemeParams;
   isExpanded: boolean;
   expand(): void;
   onEvent(eventType: string, callback: () => void): void;
   offEvent(eventType: string, callback: () => void): void;
+  HapticFeedback: TelegramHapticFeedback;
 }
 
 interface Window {

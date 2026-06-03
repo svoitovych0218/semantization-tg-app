@@ -75,6 +75,16 @@ class GuessResponse(BaseModel):
     already_guessed: bool
 
 
+class TodayGuessesRequest(BaseModel):
+    init_data: str
+
+
+class GuessHistoryEntry(BaseModel):
+    word: str
+    score: int
+    color: str
+
+
 @router.post("/guess", response_model=GuessResponse)
 async def make_guess(body: GuessRequest) -> GuessResponse:
     tg_user = _validate_init_data(body.init_data)
@@ -156,3 +166,27 @@ async def make_guess(body: GuessRequest) -> GuessResponse:
         return GuessResponse(score=score, color=_score_to_color(score), already_guessed=True)
 
     return GuessResponse(score=score, color=_score_to_color(score), already_guessed=False)
+
+
+@router.post("/guesses/today", response_model=list[GuessHistoryEntry])
+async def get_today_guesses(body: TodayGuessesRequest) -> list[GuessHistoryEntry]:
+    tg_user = _validate_init_data(body.init_data)
+    user_id: int | None = tg_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Missing user id in initData")
+
+    today = date.today()
+
+    async with async_session_maker() as session:
+        rows = (
+            await session.execute(
+                select(Guess)
+                .where(Guess.user_id == user_id, Guess.word_date == today)
+                .order_by(Guess.score.desc())
+            )
+        ).scalars().all()
+
+    return [
+        GuessHistoryEntry(word=g.guessed_word, score=g.score, color=_score_to_color(g.score))
+        for g in rows
+    ]

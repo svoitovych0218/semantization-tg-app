@@ -10,6 +10,7 @@ from .embedding import warm_up
 from .routers.admin import router as admin_router
 from .routers.guess import router as guess_router
 from .routers.leaderboard import router as leaderboard_router
+from .routers.register import router as register_router
 
 
 @asynccontextmanager
@@ -30,6 +31,7 @@ app = FastAPI(title="Semantle UA", lifespan=lifespan)
 app.include_router(admin_router)
 app.include_router(guess_router)
 app.include_router(leaderboard_router)
+app.include_router(register_router)
 
 
 @app.get("/health")
