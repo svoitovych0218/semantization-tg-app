@@ -1,0 +1,50 @@
+.guess-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.guess-view__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.guess-view__hint {
+  font-size: 0.9rem;
+  color: var(--color-hint);
+  line-height: 1.6;
+}
+
+.guess-view__input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.guess-view__input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-hint);
+  border-radius: 10px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.guess-view__input:focus {
+  border-color: var(--color-button);
+}
+
+.guess-view__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.guess-view__placeholder {
+  text-align: center;
+  color: var(--color-hint);
+  font-size: 0.85rem;
+  padding: 24px 0;
+}

@@ -1,0 +1,42 @@
+.leaderboard-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.leaderboard-view__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.leaderboard-view__hint {
+  font-size: 0.9rem;
+  color: var(--color-hint);
+}
+
+.leaderboard-view__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 40px 0;
+  color: var(--color-hint);
+}
+
+.leaderboard-view__empty-icon {
+  font-size: 2.5rem;
+}
+
+.leaderboard-view__empty-sub {
+  font-size: 0.85rem;
+  color: var(--color-button);
+  font-weight: 600;
+}
+
+.leaderboard-view__placeholder {
+  text-align: center;
+  color: var(--color-hint);
+  font-size: 0.85rem;
+  padding-bottom: 16px;
+}

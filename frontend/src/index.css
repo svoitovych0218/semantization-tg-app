@@ -1,0 +1,77 @@
+/* Telegram Mini App theme variables with light-mode fallbacks */
+:root {
+  --color-bg: var(--tg-theme-bg-color, #ffffff);
+  --color-text: var(--tg-theme-text-color, #000000);
+  --color-hint: var(--tg-theme-hint-color, #708499);
+  --color-link: var(--tg-theme-link-color, #2678b6);
+  --color-button: var(--tg-theme-button-color, #2678b6);
+  --color-button-text: var(--tg-theme-button-text-color, #ffffff);
+  --color-secondary-bg: var(--tg-theme-secondary-bg-color, #f0f0f0);
+  --color-header-bg: var(--tg-theme-header_bg_color, var(--color-bg));
+
+  /* Score color palette */
+  --score-red: #e53e3e;
+  --score-orange: #dd6b20;
+  --score-yellow: #d69e2e;
+  --score-green: #38a169;
+  --score-gold: #b7791f;
+
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  overscroll-behavior: none;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.content {
+  flex: 1;
+  padding: 16px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-button);
+  color: var(--color-button-text);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.15s;
+}
+
+.btn:active {
+  opacity: 0.8;
+}

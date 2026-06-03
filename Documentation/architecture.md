@@ -24,7 +24,7 @@ Semantle UA is a daily semantic word-guessing game for Ukrainian Telegram group 
 │   ├── alembic.ini
 │   ├── Dockerfile
 │   └── requirements.txt
-├── frontend/                 # React + Vite Mini App (implemented separately)
+├── frontend/                 # React + Vite Mini App (Cloudflare Pages)
 ├── Documentation/
 │   ├── semantle-ua-brainstorm.md
 │   └── architecture.md       # this file
